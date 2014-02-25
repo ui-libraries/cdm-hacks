@@ -1,5 +1,19 @@
 #!/usr/bin/python
 
+# getTranscriptions.py -- A script to harvest transcriptions from DIYHistory Omeka MySQL server.
+# Reads in a logfile.csv to determine last date of harvest and writes current date minus one day
+# back to logfile.csv. Connects to db and fetches transcriptions for any file modified since last
+# harvest date. Writes transcriptions to a csv file piped to stdout. (Cron job pipes stdout to a
+# tempfile.csv file) Outputs two files: “CatcherUpload_OmekaTranscriptions[timestamp].csv” is 
+# the file that will eventually get uploaded to CONTENTdm via Catcher, “updates_[timestamp].csv” 
+# is a file of conflicting data that we need to spotcheck and manually clean up before we start 
+# the CONTENTdm upload.
+#
+# Be sure to populate database password in line 60 before using.
+#
+# Author: Shawn Averkamp
+# Last modified: 2014-02-25
+
 import MySQLdb as mysql
 import csv
 import getpass
@@ -46,7 +60,7 @@ sys.stderr = open(errfilename,'w')
 # user = raw_input("Enter your db username: ")
 # pw = getpass.getpass("Enter your db password: ")
 # db = mysql.connect(db='omeka', host='128.255.52.153', user=user, passwd=pw, use_unicode=True, charset='utf8')
-db = mysql.connect(db='omeka', user='omeka_user', passwd='IvuLU8EVIxi4uSuY', use_unicode=True, charset='utf8')
+db = mysql.connect(db='omeka', user='omeka_user', passwd='', use_unicode=True, charset='utf8')
 db.set_character_set('utf8')
 c = db.cursor()
 c.execute('SET NAMES utf8;')

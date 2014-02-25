@@ -10,6 +10,9 @@
 #   uploaded to CONTENTdm via Catcher 
 # * updates_[timestamp].csv -- is a file of conflicting data that we need to spotcheck and 
 #   manually clean up before we start the CONTENTdm upload.  
+#
+# Author: Shawn Averkamp
+# Last modified: 2014-02-25
 
 
 import sys
