@@ -65,7 +65,7 @@ for ptr in ptrs:
     #digital collection url
     ispartof = 'http://digital.lib.uiowa.edu/' + alias
     sort = '000000'
-    #collection guide url -- 
+    #collection guide url
     if ('findin' in item.info):
         relation = item.info['findin']
     elif ('collea' in item.info):
