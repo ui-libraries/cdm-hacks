@@ -1,6 +1,5 @@
 ## Uploading Metadata to CONTENTdm with Catcher
 
-HAL documentation at: https://groupshare.uiowa.edu/libraries/dls/crowdsourcing/Shared%20Documents/Uploading_Metadata_to_CONTENTdm_with_Catcher.docx  
 Github scripts at: https://github.com/ui-libraries/cdm-hacks  
 Production scripts at: s-lib012.lib.uiowa.ed/local/vol00/Content6/Website/public_html/catcher  
 * **CatcherUpload.py** -- Python upload script 
