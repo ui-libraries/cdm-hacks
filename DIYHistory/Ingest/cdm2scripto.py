@@ -43,7 +43,7 @@ fileOutput = alias + today + '_File.csv'
 fFile = codecs.open(fileOutput, 'wb', encoding='utf_8')
 wtrFile = csv.writer(fFile, delimiter=',')
 #header row for file-level csv file
-fileHeaderRow = ['filename', 'title', 'identifier', 'source', 'status', 'transcription', 'Omeka file order']
+fileHeaderRow = ['Filename', 'Dublin Core:Title', 'Dublin Core:Identifier', 'Dublin Core:Source']
 wtrFile.writerow(fileHeaderRow)
 
 #create item-level metadata csv file
@@ -76,9 +76,13 @@ for ptr in ptrs:
     fileBaseURL = 'http://digital.lib.uiowa.edu/utils/getfile/collection/'
     files = []
     order = 1
-    # dropbox base url
-    dropbox = 'http://diyhistory.lib.uiowa.edu/transcribe/plugins/Dropbox/files'
-    # temp directory for downloaded jpgs
+    # if alias == 'cookbooks':
+    #     #directory for downloaded images (converted jp2s only)
+    dropbox = 'http://diyhistory.lib.uiowa.edu/plugins/Dropbox/files'
+    #     #temp directory for downloaded jpgs
+    #     tempdir = alias
+    #     if not os.path.isdir(tempdir):
+    #         os.mkdir(tempdir)
     tempdir = 'dropbox'
     if not os.path.isdir(tempdir):
         os.mkdir(tempdir)
@@ -107,29 +111,34 @@ for ptr in ptrs:
                 status = 'Completed'
             else:
                 status = 'Needs Review'
-            # code below is for downloading JPEG2000s and generating url locations for where
-            # they'll be manually moved before uploading to server. 
+            # if alias == 'cookbooks':
+                #url = tempdir + '/cookbooks_' + page.file.replace('jp2', 'jpg')
+                # code below is for downloading and uploading to server
             if page.file[-3:] == 'jp2':
-            # download image to temp directory (downloads locally, move these to 
-            # plugins/dropbox/files on server)
+            # #download image to temp directory (downloads locally, move these to dropbox on server)
+                #imagepath = page.imageurl
                 call = pycdm.Api()
                 imagepath = call.GetImage(alias, page.id, scale='50')
+                #imagefile = 'cookbooks_' + page.file.replace('jp2', 'jpg')
                 imagefile = alias + '_' + page.file.replace('jp2', 'jpg')
                 imagedata = urllib2.urlopen(imagepath).read()
                 tempfile = open(tempdir + '/' + imagefile, 'wb')
                 tempfile.write(imagedata)
+                # tempfile.close()
                 url = dropbox + '/' + imagefile
             else: 
                 url = fileBaseURL + alias + '/id/' + page.id + '/filename/' + page.file
+            # else:
+            #     url = fileBaseURL + alias + '/id/' + page.id + '/filename/' + page.file
             files.append(url)
             #write file metadata to file-level csv file
-            filerow = [url, pagelabel, fileID, pageRefURL, status, transcription.encode('ascii', 'ignore'), order]
+            filerow = [url, pagelabel, fileID, pageRefURL]
             wtrFile.writerow(filerow)
             order += 1
     #write item metadata to item-level csv file
     files = ','.join(files)
     itemrow = [itemtitle, itemID, source, ispartof, relation, sort, files]
     wtrItem.writerow(itemrow)
-    print ptr
+    print (ptr)
 fItem.close()
 fFile.close()
