@@ -1,3 +1,5 @@
+** *NOTICE - THIS REPOSITORY IS DEPRECATED* **
+
 cdm-hacks
 =========+
 
